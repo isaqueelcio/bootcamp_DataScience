@@ -5,7 +5,7 @@ permita desempenhar atividade em ciência de dados.
 
  **Trilha do bootcamp**
 
-
+[![](https://github.com/isaqueelcio/bootcamp_DataScience/blob/main/trilha.jpg)]
 
 💻 **Módulo I - Fundamentos (32h)**
 
