@@ -1,0 +1,93 @@
+# Questão 7
+
+SELECT AVG(salario)
+FROM empregado;
+
+Resultado: 35125
+
+Questão 8
+
+SELECT  e.pnome nome_empregado,
+        e.dno departamento,
+        pr.pjnome nome_projeto, 
+        te.horas horas_dedicadas
+FROM empregado e
+INNER JOIN trabalha_em te on e.ssn = te.essn
+INNER JOIN projeto pr ON pr.pnumero = te.pno
+WHERE e.dno = 5
+AND pr.pjnome = 'ProductX'
+AND te.horas > 10;
+
+Resultado: 2
+
+Questão 9
+
+SELECT COUNT(e.pnome) quantidade
+FROM empregado e
+INNER JOIN dependente d ON e.ssn = d.essn
+WHERE e.pnome = d.nome_dependente;
+
+Resultado: 0
+
+Questão 10
+
+SELECT e.pnome
+FROM (SELECT (pnome || ' ' || unome) nome_do_supervisor,
+      ssn,
+      pnome
+     FROM empregado) tab
+INNER JOIN empregado e ON tab.ssn = e.superssn
+WHERE tab.nome_do_supervisor = 'Franklin Wong';
+
+Resultado: Joyce e Ramesh
+
+Questão 11
+
+WITH max_horas AS (  
+    SELECT  te.pno pno,
+            MAX(te.horas) max_horas
+    FROM trabalha_em te
+    INNER JOIN projeto pr ON pr.pnumero = te.pno
+    GROUP by te.pno
+    )
+
+SELECT  e.pnome empregado, 
+        te.horas horas
+FROM empregado e
+INNER JOIN trabalha_em te on e.ssn = te.essn
+INNER JOIN projeto pr ON pr.pnumero = te.pno
+LEFT JOIN max_horas mh on mh.pno = pr.pnumero
+WHERE pr.pjnome = 'Newbenefits'
+AND te.horas = mh.max_horas;
+
+Resultado: Alicia
+
+Questão 12
+
+SELECT SUM(e.salario) soma_salarios
+FROM empregado e
+INNER JOIN departamento d ON e.dno = d.dnumero
+WHERE d.dnome = 'Research';
+
+Resultado: 133.000
+
+Questão 13
+
+SELECT (SUM(e.salario)*1.1) soma_salarios_aumento
+FROM empregado e
+INNER JOIN trabalha_em te on e.ssn = te.essn
+INNER JOIN projeto pr ON pr.pnumero = te.pno
+WHERE pr.pjnome = 'ProductX';
+
+Resultado: 60.500
+
+
+# Questão 14
+
+SELECT  d.dnome dept,
+        AVG(e.salario) media_salarios
+FROM empregado e
+INNER JOIN departamento d ON e.dno = d.dnumero
+GROUP BY d.dnome;
+
+Resultado: Administration (31.000)
